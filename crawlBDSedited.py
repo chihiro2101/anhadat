@@ -11,11 +11,11 @@ def check_data(field):
         return False
         
 
-f = csv.writer(open('alnd_2310.csv', 'w', encoding='utf-8'))
+f = csv.writer(open('alnd_0412.csv', 'w', encoding='utf-8'))
 f.writerow(['date', 'image', 'đường trước nhà', 'số tầng', 'số phòng ngủ', 'chỗ để xe', 'diện tích', 'kích thước','hướng nhà', 'giá', 'địa chỉ', 'quận', 'huyện'])
 pages = []
 
-for i in range(2, 165): #164
+for i in range(2, 182): #182
     url = 'https://alonhadat.com.vn/nha-dat/can-ban/can-ho-chung-cu/1/ha-noi/trang--' + str(i) + '.html'
     #https://alonhadat.com.vn/nha-dat/can-ban/can-ho-chung-cu/1/ha-noi/trang--2.html
     pages.append(url)
@@ -85,7 +85,10 @@ for item in pages:
             dien_tich = house_dientich.contents[1]
             if dien_tich.find(".") != -1:
                 dien_tich = dien_tich.replace(".", "")
-            dien_tich = int(dien_tich.strip().split(" ")[0])
+            if dien_tich.strip().split(" ")[0] == 'KXĐ':
+                dien_tich = 'NULL'
+            else:
+                dien_tich = int(dien_tich.strip().split(" ")[0])
 
 
         house_kichthuoc = text.find(class_='ct_kt') #kích thước dài*rộng
@@ -144,5 +147,4 @@ for item in pages:
 
         f.writerow([date, image, duong_truoc_nha, so_tang, so_phong_ngu, cho_de_xe, dien_tich, kich_thuoc, huong_nha,gia, dia_chi, quan, phuong])
         # f.writerow(['date', 'image', 'đường trước nhà', 'số tầng', 'số phòng ngủ', 'chỗ để xe', 'diện tích', 'kích thước','hướng nhà', 'giá', 'địa chỉ'])
-# f.close()
-# print("DONE!!!")
+print("DONE!!!")
